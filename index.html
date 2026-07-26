@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#11131a" />
+  <meta name="description" content="Play legally obtained classic-game backups in your browser with EmulatorJS." />
+  <title>K2 Emulator</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#library" aria-label="K2 Emulator home">
+        <span class="brand-mark" aria-hidden="true">K2</span>
+        <span><strong>Emulator</strong><small>Classic console hub</small></span>
+      </a>
+
+      <nav class="nav-list">
+        <button class="nav-button is-active" data-view="library" type="button">Library</button>
+        <button class="nav-button" data-view="systems" type="button">Systems</button>
+        <button class="nav-button" data-view="help" type="button">Help & legal</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>No games are included.</p>
+        <button id="installButton" class="text-button" type="button" hidden>Install app</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1 id="pageTitle">Your library</h1>
+          <p id="pageSubtitle">Import your own legally obtained game backups.</p>
+        </div>
+        <button id="openImporterButton" class="primary-button" type="button">Import game</button>
+      </header>
+
+      <section id="libraryView" class="view is-active" aria-labelledby="pageTitle">
+        <div class="toolbar">
+          <label class="search-field">
+            <span class="sr-only">Search library</span>
+            <input id="searchInput" type="search" placeholder="Search games or systems" autocomplete="off" />
+          </label>
+          <select id="systemFilter" aria-label="Filter by system">
+            <option value="all">All systems</option>
+          </select>
+          <select id="sortSelect" aria-label="Sort games">
+            <option value="recent">Recently played</option>
+            <option value="added">Recently added</option>
+            <option value="name">Name</option>
+            <option value="favorites">Favorites first</option>
+          </select>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <div class="empty-art" aria-hidden="true">＋</div>
+          <h2>Build your classics library</h2>
+          <p>Choose a ROM backup from this device. The file stays in your browser and is not uploaded to this site.</p>
+          <button class="primary-button" data-open-importer type="button">Choose a game file</button>
+        </div>
+
+        <div id="libraryGrid" class="game-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="systemsView" class="view" hidden>
+        <div id="systemsGrid" class="systems-grid"></div>
+      </section>
+
+      <section id="helpView" class="view prose" hidden>
+        <h2>How it works</h2>
+        <p>K2 Emulator is a frontend for EmulatorJS. Select a compatible game file, confirm its system, and launch it in the built-in player.</p>
+        <h2>What is stored</h2>
+        <p>Imported files, favorites, names, and recent-play information are stored locally in this browser using IndexedDB and local storage. Clearing browser site data removes them.</p>
+        <h2>Legal use</h2>
+        <p>No ROMs, BIOS files, firmware, keys, or copyrighted game artwork are included. Only use files you are legally permitted to possess and play.</p>
+        <h2>Compatibility</h2>
+        <p>Performance depends on the browser, device, emulator core, and game. Desktop Chromium-based browsers generally provide the broadest compatibility. iPhone and iPad browsers may reload large games when memory is limited.</p>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="importDialog" class="modal">
+    <form id="importForm" method="dialog">
+      <div class="modal-header">
+        <div>
+          <h2>Import a game</h2>
+          <p>The file stays on this device.</p>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close importer" type="submit">×</button>
+      </div>
+
+      <label id="dropZone" class="drop-zone">
+        <input id="romInput" type="file" hidden />
+        <strong>Drop a ROM here</strong>
+        <span>or choose a file from your device</span>
+      </label>
+
+      <div id="selectedFilePanel" class="selected-file" hidden>
+        <div>
+          <strong id="selectedFileName"></strong>
+          <span id="selectedFileMeta"></span>
+        </div>
+        <button id="clearFileButton" class="text-button" type="button">Remove</button>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          Display name
+          <input id="gameNameInput" type="text" maxlength="120" placeholder="Game title" required />
+        </label>
+        <label>
+          System
+          <select id="gameSystemSelect" required></select>
+        </label>
+      </div>
+
+      <label class="checkbox-row">
+        <input id="favoriteInput" type="checkbox" />
+        Add to favorites
+      </label>
+
+      <div class="modal-actions">
+        <button class="secondary-button" value="cancel" type="submit">Cancel</button>
+        <button id="saveGameButton" class="primary-button" type="button" disabled>Save to library</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="playerDialog" class="player-modal">
+    <div class="player-shell">
+      <header class="player-header">
+        <div>
+          <strong id="playerTitle">Game</strong>
+          <span id="playerSystem"></span>
+        </div>
+        <div class="player-actions">
+          <button id="fullscreenButton" class="secondary-button" type="button">Fullscreen</button>
+          <button id="closePlayerButton" class="primary-button" type="button">Exit game</button>
+        </div>
+      </header>
+      <div id="game" class="emulator-stage"></div>
+    </div>
+  </dialog>
+
+  <template id="gameCardTemplate">
+    <article class="game-card">
+      <button class="cover-button" type="button">
+        <span class="cover-art"></span>
+        <span class="play-indicator">Play</span>
+      </button>
+      <div class="game-card-body">
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="favorite-button" type="button" aria-label="Toggle favorite">☆</button>
+      </div>
+      <div class="game-card-footer">
+        <span class="game-meta"></span>
+        <button class="more-button" type="button" aria-label="Remove game">Remove</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
