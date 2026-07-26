@@ -24,7 +24,7 @@
       </nav>
 
       <div class="sidebar-footer">
-        <p>No games are included.</p>
+        <p>No commercial games are included.</p>
         <button id="installButton" class="text-button" type="button" hidden>Install app</button>
       </div>
     </aside>
@@ -72,10 +72,36 @@
       <section id="helpView" class="view prose" hidden>
         <h2>How it works</h2>
         <p>K2 Emulator is a frontend for EmulatorJS. Select a compatible game file, confirm its system, and launch it in the built-in player.</p>
+
+        <h2>Official emulator references</h2>
+        <ul>
+          <li><a href="https://emulatorjs.org/docs/" target="_blank" rel="noopener noreferrer">EmulatorJS documentation</a> — setup, embedding, controls, saves, and configuration.</li>
+          <li><a href="https://emulatorjs.org/docs/systems/" target="_blank" rel="noopener noreferrer">Supported systems and cores</a> — console compatibility and the correct core name.</li>
+          <li><a href="https://github.com/EmulatorJS/EmulatorJS" target="_blank" rel="noopener noreferrer">Official EmulatorJS GitHub repository</a> — source code, issues, releases, and licensing.</li>
+          <li><a href="https://github.com/EmulatorJS/EmulatorJS/releases" target="_blank" rel="noopener noreferrer">Official EmulatorJS releases</a> — downloadable stable builds for self-hosting.</li>
+        </ul>
+
+        <h2>Legal homebrew game sources</h2>
+        <p>These sites focus on homebrew or open-source games. Always inspect each individual game page and license before copying or redistributing its ROM.</p>
+        <ul>
+          <li><a href="https://hh.gbdev.io/" target="_blank" rel="noopener noreferrer">Homebrew Hub</a> — community archive for Game Boy, Game Boy Color, Game Boy Advance, and NES homebrew.</li>
+          <li><a href="https://hh.gbdev.io/disclaimer/" target="_blank" rel="noopener noreferrer">Homebrew Hub disclaimer</a> — explains its free-software policy and developer removal rights.</li>
+          <li><a href="https://itch.io/games/tag-homebrew" target="_blank" rel="noopener noreferrer">itch.io homebrew games</a> — many retro projects, but redistribution terms vary by creator.</li>
+          <li><a href="https://github.com/topics/homebrew-game" target="_blank" rel="noopener noreferrer">GitHub homebrew-game projects</a> — open-source projects; check whether a compiled ROM and redistribution license are included.</li>
+        </ul>
+
+        <h2>Before adding a built-in game</h2>
+        <ol>
+          <li>Confirm the game is homebrew, public-domain, or open-source.</li>
+          <li>Find an explicit license that permits redistribution of the compiled ROM, not only the source code.</li>
+          <li>Keep the license and attribution in the repository.</li>
+          <li>Do not commit commercial ROMs, BIOS files, firmware, encryption keys, or copyrighted box art.</li>
+        </ol>
+
         <h2>What is stored</h2>
         <p>Imported files, favorites, names, and recent-play information are stored locally in this browser using IndexedDB and local storage. Clearing browser site data removes them.</p>
         <h2>Legal use</h2>
-        <p>No ROMs, BIOS files, firmware, keys, or copyrighted game artwork are included. Only use files you are legally permitted to possess and play.</p>
+        <p>No commercial ROMs, BIOS files, firmware, keys, or copyrighted game artwork are included. Only use files you are legally permitted to possess and play.</p>
         <h2>Compatibility</h2>
         <p>Performance depends on the browser, device, emulator core, and game. Desktop Chromium-based browsers generally provide the broadest compatibility. iPhone and iPad browsers may reload large games when memory is limited.</p>
       </section>
